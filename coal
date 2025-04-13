@@ -1,0 +1,55 @@
+#!/bin/bash
+# Automating the Automation LOL
+# Add me on LinkedIn: https://www.linkedin.com/in/avery-hughes06/
+# Add me on Discord: itzshadybaby
+
+basedir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+coord="$basedir/coordinate-root/coordinate"
+
+TARGETS=""
+PASSWORD=""
+
+# Parse command-line options
+while getopts "t:p:" opt; do
+  case "$opt" in
+  t)
+    TARGETS="$OPTARG"
+    ;;
+  p)
+    PASSWORD="$OPTARG"
+    ;;
+  *)
+    echo "Usage: $0 -t \"target1,target2,target3\ -p \"password1,password2\""
+    exit 1
+    ;;
+  esac
+done
+
+# Ensure targets were provided
+if [[ -z "$TARGETS" ]]; then
+  echo "Error: No targets specified."
+  echo "Usage: $0 -t \"target1,target2,target3\""
+  exit 1
+fi
+
+if [[ -z "$PASSWORD" ]]; then
+  echo "Error: No passwords specified."
+  echo "Usage: $0 -p \"password1,password2\""
+  exit 1
+fi
+
+bash "$basedir"/asciiart
+
+"$coord" -t "$TARGETS" -u root -p "$PASSWORD" -C
+
+"$coord" -U "$basedir/enum/baseline.sh"
+"$coord" -U "$basedir/enum/initial.sh"
+"$coord" -U "$basedir/enum/pingshell_detect.sh"
+
+"$coord" -U "$basedir/initial/backups.sh"
+"$coord" -U "$basedir/initial/cleanfiles.sh"
+"$coord" -U "$basedir/initial/sysctl_harden.sh"
+"$coord" -U "$basedir/initial/php.sh"
+"$coord" -U "$basedir/initial/install.sh"
+
+"$coord" -U "$basedir/firewall/iptables.sh"
